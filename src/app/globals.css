@@ -236,6 +236,22 @@ body {
   mask-composite: exclude;
 }
 
+/* Cartouche du titre de la salle : un filet de laiton sur un fond assombri.
+   Il tient lieu d'encadrement volontaire — et détache le titre du décor, qui
+   sans lui remonte derrière les lettres. */
+.cartouche {
+  border: 1px solid rgba(211, 177, 107, 0.45);
+  border-radius: 10px;
+  background-image: linear-gradient(
+    180deg,
+    rgba(26, 16, 7, 0.58) 0%,
+    rgba(14, 9, 4, 0.42) 100%
+  );
+  box-shadow:
+    0 2px 16px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 rgba(255, 228, 176, 0.14);
+}
+
 /* Texte gravé dans le laiton. */
 .engraved {
   color: #f7e9c2;
