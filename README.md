@@ -164,24 +164,23 @@ une fois le couloir démonté.
 
 ## Lighthouse
 
-Mesuré sur le build de production (`next start`, en local) :
+Mesuré sur le site en ligne (<https://thomasdenet30-sys.github.io/portfolio/>) :
 
 | | Performance | Accessibilité | Bonnes pratiques | SEO |
 | --- | --- | --- | --- | --- |
 | **Desktop** | **100** | **100** | **100** | **100** |
-| **Mobile** | 96–97 | **100** | **100** | **100** |
+| **Mobile** | **99** | **100** | **100** | **100** |
 
-Sur mobile, **toutes les métriques sont à 1,00 sauf le LCP** : FCP 0,8 s,
-Speed Index 0,8 s, TBT 30 ms, CLS 0. Le LCP (≈ 2,6–2,7 s simulées) plafonne donc
-le score à 96 ou 97 selon les passages — la différence entre les deux est du
-bruit de mesure sur la frontière d'arrondi, pas une régression. L'audit mobile simule
-un processeur quatre fois plus lent : le délai vient presque entièrement de
-l'hydratation de la scène, pas du réseau (toutes les ressources sont chargées en
-moins de 200 ms, CLS à 0, TBT à 50 ms). Le TTFB mesuré ici est celui d'un
-`next start` local ; derrière un CDN, la page étant pré‑rendue statiquement, il
-tombe très bas.
+Le mobile perd son point sur le seul LCP (2,2 s simulées) : l'audit mobile
+simule un processeur quatre fois plus lent, et le délai vient de l'hydratation
+de la scène, pas du réseau. Toutes les autres métriques sont à 1,00 — FCP 0,8 s,
+Speed Index 0,8 s, TBT 30 ms, CLS 0.
+
+Pour mémoire, le même build servi par un `next start` local plafonnait à 96 :
+son TTFB de 455 ms tombe à 10 ms derrière le CDN de GitHub. Mesurez toujours sur
+l'URL publiée, pas en local.
 
 ⚠️ La construction anticipée de la salle est déclenchée **après l'événement
 `load`**, puis au premier temps mort, et enveloppée dans un `startTransition`.
-Lancée plus tôt ou d'un bloc, elle repoussait le LCP de 0,6 s à 1,0 s et faisait
-tripler le temps de blocage. Si vous touchez à ce planning, remesurez.
+Lancée plus tôt ou d'un bloc, elle repoussait le LCP et faisait tripler le temps
+de blocage. Si vous touchez à ce planning, remesurez.
