@@ -51,8 +51,17 @@ body {
   overscroll-behavior: none;
 }
 
-/* Anneau de focus visible et cohérent partout. */
-:where(a, button, [tabindex]):focus-visible {
+/* Anneau de focus visible et cohérent partout — sur ce qui est réellement
+   atteignable au clavier.
+
+   `[tabindex]` seul attrapait aussi les `tabindex="-1"`, qui ne sont pas dans
+   l'ordre de tabulation : ce sont des cibles de focus programmatique, comme le
+   titre de la salle qu'on met au focus en entrant pour y amener les lecteurs
+   d'écran. Résultat, ce titre s'encadrait quand on entrait au clavier et pas à
+   la souris — même geste, deux rendus. Un titre n'étant pas actionnable, il
+   n'a pas à porter d'indicateur de focus (WCAG 2.4.7 ne vise que les composants
+   utilisables au clavier). */
+:where(a, button, [tabindex]:not([tabindex="-1"])):focus-visible {
   outline: 2px solid var(--color-brass-200);
   outline-offset: 3px;
   border-radius: 6px;
