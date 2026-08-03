@@ -105,6 +105,24 @@ body {
   );
 }
 
+/* Bronze patiné : la plaque des pupitres.
+   Le laiton clair de la porte ne peut pas servir ici. Son dégradé va de
+   #f6e9bd à #6a4f1e : une gravure sombre y tient 12,8:1 sur les zones claires
+   mais tombe à 2,0:1 sur les sombres — sous le seuil AA de 4,5, d'où des noms
+   qui disparaissent par endroits. Un fond sombre et resserré tient au
+   contraire 9,3 à 14,9:1 sur toute la longueur, avec une gravure claire. */
+.material-bronze {
+  background-image: linear-gradient(
+    142deg,
+    #1d1408 0%,
+    #34260f 22%,
+    #4a3717 44%,
+    #2a1d0b 62%,
+    #3d2c12 82%,
+    #1f1509 100%
+  );
+}
+
 /* Tranches de livres : périodes irrégulières pour casser la répétition. */
 .material-books {
   background-image:
@@ -231,6 +249,15 @@ body {
 .engraved-deep {
   color: #2f2205;
   text-shadow: 0 1px 0 rgba(255, 245, 205, 0.5);
+}
+
+/* Gravure claire dans le bronze sombre : la lettre attrape la lumière qui
+   vient d'en haut, et son creux projette une ombre juste en dessous. */
+.engraved-light {
+  color: #f8e7c0;
+  text-shadow:
+    0 1px 1.5px rgba(0, 0, 0, 0.9),
+    0 -1px 0 rgba(0, 0, 0, 0.45);
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
