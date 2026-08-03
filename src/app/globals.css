@@ -175,7 +175,18 @@ body {
    (Une `container-query` serait plus idiomatique, mais `container-type` pose
    de la containment qui aplatit le contexte 3D des vantaux.) */
 .door-scene {
-  --door-w: min(92vw, 62vh);
+  --door-w: min(94vw, 62vh);
+  /* Rapport largeur/hauteur du vantail. En portrait la porte est bridée par la
+     largeur de l'écran alors qu'il reste de la hauteur : on l'allonge, ce qui
+     agrandit d'autant la plaque. Le masque de la baie lit la même variable,
+     les deux ne peuvent donc pas se désaccorder. */
+  --door-ratio: 0.7;
+}
+
+@media (max-aspect-ratio: 1/1) {
+  .door-scene {
+    --door-ratio: 0.58;
+  }
 }
 
 /* Perce une baie en plein cintre dans le couloir.
@@ -188,8 +199,8 @@ body {
   --arch: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 70 100' preserveAspectRatio='none'><path d='M0 100V42A35 42 0 0 1 70 42V100Z' fill='black'/></svg>");
   -webkit-mask-image: linear-gradient(#000, #000), var(--arch);
   mask-image: linear-gradient(#000, #000), var(--arch);
-  -webkit-mask-size: 100% 100%, var(--door-w) calc(var(--door-w) / 0.7);
-  mask-size: 100% 100%, var(--door-w) calc(var(--door-w) / 0.7);
+  -webkit-mask-size: 100% 100%, var(--door-w) calc(var(--door-w) / var(--door-ratio));
+  mask-size: 100% 100%, var(--door-w) calc(var(--door-w) / var(--door-ratio));
   -webkit-mask-position: center, center;
   mask-position: center, center;
   -webkit-mask-repeat: no-repeat;

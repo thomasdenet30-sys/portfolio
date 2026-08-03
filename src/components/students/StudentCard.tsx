@@ -101,7 +101,7 @@ export function StudentCard({ project, seat, index, deskWidth, onSelect }: Stude
               </div>
 
               {/* Plaque gravée : en HTML, pour une typographie parfaitement nette. */}
-              <div className="absolute bottom-[14%] left-1/2 w-[72%] -translate-x-1/2">
+              <div className="absolute bottom-[13%] left-1/2 w-[82%] -translate-x-1/2">
                 <div className="material-brass relative rounded-[3px] px-2 py-[2px] shadow-[0_1px_3px_rgba(0,0,0,0.7),inset_0_1px_0_rgba(255,255,255,0.45)]">
                   <span
                     className="engraved-deep block whitespace-nowrap text-center font-display leading-snug tracking-wide"
@@ -110,7 +110,7 @@ export function StudentCard({ project, seat, index, deskWidth, onSelect }: Stude
                        suivre la même. Au-delà d'onze caractères elle rétrécit
                        plutôt que de déborder. */
                     style={{
-                      fontSize: `calc(var(--desk-w) * ${(0.115 * Math.min(1, 11 / plaqueName.length)).toFixed(4)})`,
+                      fontSize: `calc(var(--desk-w) * ${(0.135 * Math.min(1, 11 / plaqueName.length)).toFixed(4)})`,
                     }}
                   >
                     {plaqueName}

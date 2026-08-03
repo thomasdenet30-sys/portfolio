@@ -89,7 +89,7 @@ export function Door({ open, onEnter, onPrefetch, onEntered }: DoorProps) {
         className="relative"
         style={{
           width: "var(--door-w)",
-          aspectRatio: "0.7",
+          aspectRatio: "var(--door-ratio)",
           /* La perspective est portée ici, et non par le plein écran : ce
              conteneur peut ainsi aplatir son sous-arbre pour l'agrandir sans
              priver les vantaux de leur profondeur. */
@@ -173,7 +173,7 @@ export function Door({ open, onEnter, onPrefetch, onEntered }: DoorProps) {
 
         {/* Plaque : à cheval sur les deux vantaux, donc rendue au-dessus. */}
         <motion.div
-          className="pointer-events-none absolute left-1/2 top-[17%] w-[78%] -translate-x-1/2 sm:top-[18%] sm:w-[62%]"
+          className="pointer-events-none absolute left-1/2 top-[15%] w-[84%] -translate-x-1/2 sm:top-[18%] sm:w-[68%]"
           initial={false}
           animate={open ? { opacity: 0, y: -18 } : { opacity: 1, y: 0 }}
           transition={{ duration: 0.4, ease: easeOutExpo }}
