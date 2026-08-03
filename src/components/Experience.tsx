@@ -104,6 +104,17 @@ export function Experience() {
 
   const close = useCallback(() => setSelected(null), []);
 
+  /* Chien de garde.
+     Franchir le seuil dépend de `onAnimationComplete`. Une machine à états ne
+     devrait pas dépendre d'un rappel d'animation : s'il ne partait pas, le
+     visiteur resterait bloqué devant la porte. Passé la durée de la séquence,
+     on entre donc de force. */
+  useEffect(() => {
+    if (phase !== "passage") return;
+    const timer = window.setTimeout(() => setPhase("salle"), 3400);
+    return () => window.clearTimeout(timer);
+  }, [phase]);
+
   return (
     /* `reducedMotion="user"` : Motion neutralise alors tous les déplacements et
        rotations pour qui a désactivé les animations, et ne conserve que les
