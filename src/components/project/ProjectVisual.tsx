@@ -106,13 +106,15 @@ export function ProjectVisual({ project }: { project: Project }) {
         }}
       />
 
-      {/* Le logo passe *au-dessus* du voile : dessous, un logotype clair se
-          délavait jusqu'à disparaître. Le cadre est dimensionné en largeur avec
-          un rapport fixe — une hauteur en pourcentage réduisait le logotype à
-          une ligne de quelques pixels. */}
+      {/* Le logo passe *au-dessus* du voile lumineux — dessous, un logotype
+          clair se délavait jusqu'à disparaître — et au-dessus du personnage,
+          rendu par la fiche juste après ce composant : sans `z-10` il lui
+          mangeait la fin du mot, très visible sur mobile où le panneau est bas.
+          Le cadre est dimensionné en largeur avec un rapport fixe ; une hauteur
+          en pourcentage réduisait le logotype à quelques pixels. */}
       {logo.wordmark ? (
         <div
-          className="absolute left-[8%] top-[8%] w-[58%] drop-shadow-[0_2px_10px_rgba(0,0,0,0.5)]"
+          className="absolute left-[5%] top-[6%] z-10 w-[66%] drop-shadow-[0_2px_12px_rgba(0,0,0,0.75)]"
           style={{ aspectRatio: "4 / 1" }}
         >
           <Image
@@ -125,7 +127,7 @@ export function ProjectVisual({ project }: { project: Project }) {
           />
         </div>
       ) : logo.icon ? (
-        <div className="absolute left-[8%] top-[8%] aspect-square w-[19%] overflow-hidden rounded-[23%] shadow-[0_6px_18px_rgba(0,0,0,0.4)]">
+        <div className="absolute left-[6%] top-[7%] z-10 aspect-square w-[21%] overflow-hidden rounded-[23%] shadow-[0_6px_18px_rgba(0,0,0,0.45)]">
           <Image
             src={asset(logo.icon)}
             alt=""
