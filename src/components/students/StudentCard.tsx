@@ -104,11 +104,16 @@ export function StudentCard({ project, seat, index, deskWidth, onSelect }: Stude
               <div className="absolute bottom-[13%] left-1/2 w-[82%] -translate-x-1/2">
                 <div className="material-bronze relative rounded-[3px] px-2 py-[3px] shadow-[0_0_0_1px_rgba(201,169,97,0.55),0_2px_5px_rgba(0,0,0,0.8),inset_0_1px_0_rgba(255,214,150,0.35),inset_0_-1px_0_rgba(0,0,0,0.65)]">
                   <span
-                    className="engraved-light block whitespace-nowrap text-center font-display leading-snug tracking-wide"
+                    className="engraved-light block whitespace-nowrap text-center font-display font-bold leading-snug tracking-wide"
                     /* Indexée sur la largeur du pupitre, pas sur le viewport :
                        la plaque en occupe une fraction fixe, la gravure doit
                        suivre la même. Au-delà d'onze caractères elle rétrécit
-                       plutôt que de déborder. */
+                       plutôt que de déborder.
+
+                       Le gras est synthétique — Instrument Serif n'existe qu'en
+                       romain. Vérifié à ×4 : les traits s'épaississent sans
+                       boucher les contreformes, ce qui n'est pas gagné d'avance
+                       sur une serif à fort contraste. */
                     style={{
                       fontSize: `calc(var(--desk-w) * ${(0.135 * Math.min(1, 11 / plaqueName.length)).toFixed(4)})`,
                     }}
