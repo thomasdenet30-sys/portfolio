@@ -16,13 +16,7 @@ import { easeOutExpo } from "@/lib/motion";
  * sans cela, la disparition du bouton « Entrer » renverrait le focus clavier
  * sur `<body>` et le contexte serait perdu pour un lecteur d'écran.
  */
-export function RoomHud({
-  visible,
-  hintVisible,
-}: {
-  visible: boolean;
-  hintVisible: boolean;
-}) {
+export function RoomHud({ visible }: { visible: boolean }) {
   const headingRef = useRef<HTMLHeadingElement>(null);
 
   useEffect(() => {
@@ -61,8 +55,8 @@ export function RoomHud({
       <motion.p
         className="absolute bottom-[4vh] left-1/2 w-[min(88vw,44rem)] -translate-x-1/2 text-balance text-center text-[0.95rem] tracking-wide sm:text-[clamp(0.8rem,1.1vmax,0.95rem)] text-[#f3d7a8]/75 drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]"
         initial={false}
-        animate={{ opacity: visible && hintVisible ? 1 : 0 }}
-        transition={{ delay: visible && hintVisible ? 1.1 : 0, duration: 0.7, ease: easeOutExpo }}
+        animate={{ opacity: visible ? 1 : 0 }}
+        transition={{ delay: visible ? 1.1 : 0, duration: 0.7, ease: easeOutExpo }}
       >
         Chaque élève est un projet — survolez-le, puis cliquez pour ouvrir sa fiche.
       </motion.p>

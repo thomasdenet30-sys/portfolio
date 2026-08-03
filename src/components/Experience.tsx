@@ -35,7 +35,6 @@ type Phase = "seuil" | "passage" | "salle";
 export function Experience() {
   const [phase, setPhase] = useState<Phase>("seuil");
   const [selected, setSelected] = useState<Project | null>(null);
-  const [hintSeen, setHintSeen] = useState(false);
   /* Une fois ouverte, la fiche reste montée : c'est `AnimatePresence`, à
      l'intérieur, qui joue la sortie. La démonter ici la ferait disparaître
      d'un coup. */
@@ -97,7 +96,6 @@ export function Experience() {
 
   const select = useCallback((project: Project) => {
     playChime();
-    setHintSeen(true);
     setCardEverOpened(true);
     setSelected(project);
   }, []);
@@ -132,7 +130,7 @@ export function Experience() {
               révèle qu'une fois le seuil franchi, sans quoi le titre
               transparaîtrait dans l'embrasure. */}
           {phase !== "seuil" ? (
-            <RoomHud visible={phase === "salle"} hintVisible={!hintSeen} />
+            <RoomHud visible={phase === "salle"} />
           ) : null}
 
           {phase !== "salle" ? (
