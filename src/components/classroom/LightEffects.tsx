@@ -51,7 +51,10 @@ export function LightEffects() {
         return (
           <div
             key={index}
-            className="animate-dust absolute rounded-full bg-[#ffe3b8]"
+            /* Chaque grain est une couche composée à part. Sur téléphone, la
+               moitié suffit à faire vivre la lumière et libère autant de
+               mémoire graphique. */
+            className={`animate-dust absolute rounded-full bg-[#ffe3b8] ${index >= 12 ? "hidden sm:block" : ""}`}
             style={
               {
                 left: `${(18 + noise(index, 1) * 64).toFixed(2)}%`,

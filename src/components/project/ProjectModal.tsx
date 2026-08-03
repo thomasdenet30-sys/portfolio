@@ -53,7 +53,7 @@ function ModalContent({ project, onClose }: { project: Project; onClose: () => v
     <div className="fixed inset-0 z-50 grid place-items-center p-4 sm:p-6">
       <motion.button
         type="button"
-        className="absolute inset-0 cursor-default bg-[#0b0704]/75 backdrop-blur-md"
+        className="absolute inset-0 cursor-default bg-[#0b0704]/90 sm:bg-[#0b0704]/75 sm:backdrop-blur-md"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}

@@ -1,17 +1,20 @@
 "use client";
 
-import { motion, useReducedMotion, useSpring, useTransform } from "motion/react";
+import { motion, useReducedMotion, useTransform } from "motion/react";
 import type { ReactNode } from "react";
 import { usePointer } from "@/components/providers/PointerProvider";
-import { spring } from "@/lib/motion";
 
 /**
  * Mouvement de caméra piloté par le curseur.
  *
  * On enveloppe chaque plan de la scène avec une `depth` différente : le décor
- * bouge peu, les élèves bougent davantage. C'est cet écart — et non un vrai
- * déplacement 3D — qui fait lire la profondeur, pour le prix d'un `transform`
- * composité par le GPU.
+ * bouge peu, les élèves davantage, l'estrade beaucoup. C'est cet écart — et non
+ * un vrai déplacement 3D — qui fait lire la profondeur, pour le prix d'un
+ * `transform` composité par le GPU.
+ *
+ * Le lissage vient de `PointerProvider`, partagé par tous les plans : chacun ne
+ * fait plus qu'en dériver son amplitude. Trois plans coûtaient douze ressorts,
+ * ils n'en coûtent plus aucun.
  *
  * Le léger sur-dimensionnement (`scale`) évite de découvrir les bords quand la
  * couche pivote.
@@ -25,20 +28,14 @@ export function CameraAnimation({
   children: ReactNode;
   className?: string;
 }) {
-  const { nx, ny } = usePointer();
+  const { cameraX, cameraY } = usePointer();
   const reduced = useReducedMotion();
   const amplitude = reduced ? 0 : depth;
 
-  const x = useSpring(useTransform(nx, [0, 1], [16 * amplitude, -16 * amplitude]), spring.soft);
-  const y = useSpring(useTransform(ny, [0, 1], [9 * amplitude, -9 * amplitude]), spring.soft);
-  const rotateY = useSpring(
-    useTransform(nx, [0, 1], [-1.1 * amplitude, 1.1 * amplitude]),
-    spring.soft,
-  );
-  const rotateX = useSpring(
-    useTransform(ny, [0, 1], [0.7 * amplitude, -0.7 * amplitude]),
-    spring.soft,
-  );
+  const x = useTransform(cameraX, (v) => (0.5 - v) * 32 * amplitude);
+  const y = useTransform(cameraY, (v) => (0.5 - v) * 18 * amplitude);
+  const rotateY = useTransform(cameraX, (v) => (v - 0.5) * 2.2 * amplitude);
+  const rotateX = useTransform(cameraY, (v) => (0.5 - v) * 1.4 * amplitude);
 
   return (
     <motion.div

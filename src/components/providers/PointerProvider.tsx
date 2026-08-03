@@ -1,7 +1,8 @@
 "use client";
 
 import { createContext, useContext, useEffect, useMemo, type ReactNode } from "react";
-import { useMotionValue, type MotionValue } from "motion/react";
+import { useMotionValue, useSpring, type MotionValue } from "motion/react";
+import { spring } from "@/lib/motion";
 
 interface PointerState {
   /** Position du curseur, normalisée : 0 = bord gauche, 1 = bord droit. */
@@ -10,6 +11,12 @@ interface PointerState {
   ny: MotionValue<number>;
   /** Rapport largeur/hauteur du viewport, pour corriger les distances. */
   aspect: MotionValue<number>;
+  /** Position lissée pour les regards : réactive, mais jamais nerveuse. */
+  gazeX: MotionValue<number>;
+  gazeY: MotionValue<number>;
+  /** Position lissée pour la caméra : plus lente, plus ample. */
+  cameraX: MotionValue<number>;
+  cameraY: MotionValue<number>;
 }
 
 const PointerContext = createContext<PointerState | null>(null);
@@ -19,13 +26,28 @@ const PointerContext = createContext<PointerState | null>(null);
  *
  * Volontairement hors du state React : le regard des élèves, le parallaxe et
  * les reflets se mettent à jour sans provoquer le moindre re-render.
+ *
+ * ── Un ressort par usage, pas un par élément ──────────────────────────────
+ * Chaque élève lissait autrefois son propre regard, et chaque plan de décor sa
+ * propre caméra : vingt-six ressorts intégrés à chaque frame, tous alimentés
+ * par les deux mêmes valeurs. Le lissage est désormais fait **une fois ici**,
+ * et chacun se contente d'en dériver sa valeur par un simple calcul. Quatre
+ * ressorts au total, pour un rendu identique.
  */
 export function PointerProvider({ children }: { children: ReactNode }) {
   const nx = useMotionValue(0.5);
   const ny = useMotionValue(0.42);
   const aspect = useMotionValue(1.6);
 
-  const value = useMemo<PointerState>(() => ({ nx, ny, aspect }), [nx, ny, aspect]);
+  const gazeX = useSpring(nx, spring.gaze);
+  const gazeY = useSpring(ny, spring.gaze);
+  const cameraX = useSpring(nx, spring.soft);
+  const cameraY = useSpring(ny, spring.soft);
+
+  const value = useMemo<PointerState>(
+    () => ({ nx, ny, aspect, gazeX, gazeY, cameraX, cameraY }),
+    [nx, ny, aspect, gazeX, gazeY, cameraX, cameraY],
+  );
 
   useEffect(() => {
     let frame = 0;
