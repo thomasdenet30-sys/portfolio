@@ -32,11 +32,11 @@ export function DoorPlaque() {
         />
       ))}
 
-      <p className="engraved-deep text-center text-[calc(var(--door-w)*0.027)] font-semibold uppercase tracking-[0.34em]">
+      <p className="engraved-deep text-center text-[clamp(0.72rem,calc(var(--door-w)*0.027),1rem)] font-semibold uppercase tracking-[0.22em] sm:tracking-[0.34em]">
         {teacher.room}
       </p>
 
-      <p className="engraved-deep mt-[calc(var(--door-w)*0.016)] whitespace-nowrap text-center font-display text-[calc(var(--door-w)*0.068)] leading-none tracking-wide">
+      <p className="engraved-deep mt-[calc(var(--door-w)*0.016)] whitespace-nowrap text-center font-display text-[clamp(1.5rem,calc(var(--door-w)*0.068),2.6rem)] leading-none tracking-wide">
         {teacher.name}
       </p>
 
@@ -44,7 +44,7 @@ export function DoorPlaque() {
 
       {/* Les rôles sont répartis en deux lignes explicites plutôt que laissés
           au retour automatique, qui abandonnait un « • » en fin de ligne. */}
-      <p className="engraved-deep text-center text-[calc(var(--door-w)*0.026)] font-medium leading-relaxed tracking-[0.1em]">
+      <p className="engraved-deep text-center text-[clamp(0.75rem,calc(var(--door-w)*0.026),1rem)] font-medium leading-relaxed tracking-[0.06em] sm:tracking-[0.1em]">
         {ROLE_LINES.map((line) => (
           <span key={line} className="block">
             {line}

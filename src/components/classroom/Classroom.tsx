@@ -4,7 +4,8 @@ import { motion } from "motion/react";
 import { useMemo } from "react";
 import { projects } from "@/data/projects";
 import { easeOutExpo } from "@/lib/motion";
-import { buildSeating, buildTiers } from "@/lib/seating";
+import { buildSeating, buildTiers, DESK_WIDTH } from "@/lib/seating";
+import { usePortrait } from "@/hooks/useMediaQuery";
 import type { Project } from "@/types/project";
 import { StudentCard } from "@/components/students/StudentCard";
 import { Background } from "./Background";
@@ -19,8 +20,12 @@ import { LightEffects } from "./LightEffects";
  * la profondeur, et il ne coûte que deux `transform` composités.
  */
 export function Classroom({ onSelect }: { onSelect: (project: Project) => void }) {
-  const seats = useMemo(() => buildSeating(projects.length), []);
-  const tiers = useMemo(() => buildTiers(projects.length), []);
+  /* Le format décide de la disposition : plus de rangs et moins d'élèves par
+     rang sur un téléphone tenu droit, sans quoi les pupitres deviennent trop
+     étroits pour que leur plaque reste lisible. */
+  const layout = usePortrait() ? "portrait" : "landscape";
+  const seats = useMemo(() => buildSeating(projects.length, layout), [layout]);
+  const tiers = useMemo(() => buildTiers(projects.length, layout), [layout]);
 
   return (
     /* Fondu seul, sans mise à l'échelle : la salle apparaît pendant que le
@@ -66,6 +71,7 @@ export function Classroom({ onSelect }: { onSelect: (project: Project) => void }
               project={project}
               seat={seats[index]}
               index={index}
+              deskWidth={DESK_WIDTH[layout]}
               onSelect={onSelect}
             />
           ))}

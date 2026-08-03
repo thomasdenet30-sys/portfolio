@@ -13,6 +13,8 @@ interface StudentCardProps {
   project: Project;
   seat: Seat;
   index: number;
+  /** Largeur du pupitre, décidée par le format de l'écran. */
+  deskWidth: string;
   onSelect: (project: Project) => void;
 }
 
@@ -26,7 +28,7 @@ interface StudentCardProps {
  * statique, entrée en scène, réaction au survol — pour qu'aucune animation
  * n'écrase le `transform` d'une autre.
  */
-export function StudentCard({ project, seat, index, onSelect }: StudentCardProps) {
+export function StudentCard({ project, seat, index, deskWidth, onSelect }: StudentCardProps) {
   const [active, setActive] = useState(false);
   const reduced = useReducedMotion();
   // Le regard part de la tête, pas du sol : d'où le décalage vertical.
@@ -40,9 +42,11 @@ export function StudentCard({ project, seat, index, onSelect }: StudentCardProps
       <div
         className="-translate-x-1/2 -translate-y-full"
         style={{
-          width: "15vmax",
+          width: deskWidth,
           transform: `rotateY(${seat.turn}deg) scale(${seat.scale})`,
           transformOrigin: "50% 100%",
+          // Exposée aux enfants : la gravure se dimensionne sur le pupitre.
+          ["--desk-w" as string]: deskWidth,
         }}
       >
         {/* 3 · Entrée en scène, échelonnée d'un élève à l'autre. */}
@@ -101,9 +105,13 @@ export function StudentCard({ project, seat, index, onSelect }: StudentCardProps
                 <div className="material-brass relative rounded-[3px] px-2 py-[2px] shadow-[0_1px_3px_rgba(0,0,0,0.7),inset_0_1px_0_rgba(255,255,255,0.45)]">
                   <span
                     className="engraved-deep block whitespace-nowrap text-center font-display leading-snug tracking-wide"
-                    /* Filet de sécurité : au-delà d'onze caractères la gravure
-                       rétrécit au lieu de déborder de la plaque. */
-                    style={{ fontSize: `${1.7 * Math.min(1, 11 / plaqueName.length)}vmax` }}
+                    /* Indexée sur la largeur du pupitre, pas sur le viewport :
+                       la plaque en occupe une fraction fixe, la gravure doit
+                       suivre la même. Au-delà d'onze caractères elle rétrécit
+                       plutôt que de déborder. */
+                    style={{
+                      fontSize: `calc(var(--desk-w) * ${(0.115 * Math.min(1, 11 / plaqueName.length)).toFixed(4)})`,
+                    }}
                   >
                     {plaqueName}
                   </span>

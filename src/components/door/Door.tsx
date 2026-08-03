@@ -173,7 +173,7 @@ export function Door({ open, onEnter, onPrefetch, onEntered }: DoorProps) {
 
         {/* Plaque : à cheval sur les deux vantaux, donc rendue au-dessus. */}
         <motion.div
-          className="pointer-events-none absolute left-1/2 top-[18%] w-[62%] -translate-x-1/2"
+          className="pointer-events-none absolute left-1/2 top-[17%] w-[78%] -translate-x-1/2 sm:top-[18%] sm:w-[62%]"
           initial={false}
           animate={open ? { opacity: 0, y: -18 } : { opacity: 1, y: 0 }}
           transition={{ duration: 0.4, ease: easeOutExpo }}
