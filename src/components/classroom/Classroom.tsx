@@ -51,7 +51,9 @@ export function Classroom({ onSelect }: { onSelect: (project: Project) => void }
             return (
               <div
                 key={tier.y}
-                className="absolute inset-x-[-8%]"
+                /* Décor pur : sans `pointer-events-none`, la marche happait
+                   les clics destinés aux élèves du rang juste en dessous. */
+                className="pointer-events-none absolute inset-x-[-8%]"
                 style={{
                   top: `${tier.y}%`,
                   height: `${riser}%`,

@@ -36,8 +36,17 @@ export function StudentCard({ project, seat, index, deskWidth, onSelect }: Stude
   const plaqueName = project.shortName ?? project.name;
 
   return (
-    /* 1 · Ancrage : le point au sol de la place. */
-    <div className="absolute" style={{ left: `${seat.x}%`, top: `${seat.y}%`, zIndex: seat.z + (active ? 5 : 0) }}>
+    /* 1 · Ancrage : le point au sol de la place.
+       `size-0` est indispensable. Un élément en position absolue sans
+       dimensions prend la taille de son contenu — ici un rectangle de la
+       taille du pupitre, mais posé en bas à droite du point d'ancrage alors
+       que le pupitre, lui, est translaté en haut à gauche. Ce fantôme
+       invisible recouvrait les élèves voisins et interceptait leurs clics :
+       les rangs du milieu ne captaient que 85 % de leur propre surface. */
+    <div
+      className="absolute size-0"
+      style={{ left: `${seat.x}%`, top: `${seat.y}%`, zIndex: seat.z + (active ? 5 : 0) }}
+    >
       {/* 2 · Placement statique : recentrage, orientation vers l'estrade, échelle du rang. */}
       <div
         className="-translate-x-1/2 -translate-y-full"
