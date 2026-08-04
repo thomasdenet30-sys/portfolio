@@ -41,13 +41,26 @@ export function ProjectModal({
   );
 }
 
-function ModalContent({ project, onClose }: { project: Project; onClose: () => void }) {
+function ModalContent({
+  project,
+  onClose,
+}: {
+  project: Project;
+  onClose: () => void;
+}) {
   const dialogRef = useRef<HTMLDivElement>(null);
   const gaze = useGaze({ x: 28, y: 52 }, 1.1);
   useFocusTrap(dialogRef, onClose);
 
-  const { colors, name, discipline, shortDescription, website, personality, inProgress } =
-    project;
+  const {
+    colors,
+    name,
+    discipline,
+    shortDescription,
+    website,
+    personality,
+    inProgress,
+  } = project;
 
   return (
     <div className="fixed inset-0 z-50 grid place-items-center p-4 sm:p-6">
@@ -91,7 +104,10 @@ function ModalContent({ project, onClose }: { project: Project; onClose: () => v
           </div>
 
           {/* Contenu. */}
-          <div className="flex flex-col gap-5 p-7 sm:p-9" style={{ color: colors.ink }}>
+          <div
+            className="flex flex-col gap-5 p-7 sm:p-9"
+            style={{ color: colors.ink }}
+          >
             <div className="flex items-center gap-4">
               <ProjectLogo project={project} className="h-14 w-14 shrink-0" />
               <div className="min-w-0">
@@ -101,21 +117,29 @@ function ModalContent({ project, onClose }: { project: Project; onClose: () => v
                 >
                   {name}
                 </h2>
-                <p className="mt-1.5 text-sm font-medium opacity-70">{discipline}</p>
+                <p className="mt-1.5 text-sm font-medium opacity-70">
+                  {discipline}
+                </p>
               </div>
             </div>
 
             <div className="flex flex-wrap items-center gap-2">
               <span
                 className="w-fit rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-[0.14em]"
-                style={{ backgroundColor: `${colors.primary}1f`, color: colors.ink }}
+                style={{
+                  backgroundColor: `${colors.primary}1f`,
+                  color: colors.ink,
+                }}
               >
                 {TEMPERAMENT[personality]}
               </span>
               {inProgress ? (
                 <span
                   className="flex w-fit items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-[0.14em]"
-                  style={{ backgroundColor: `${colors.ink}14`, color: colors.ink }}
+                  style={{
+                    backgroundColor: `${colors.ink}14`,
+                    color: colors.ink,
+                  }}
                 >
                   <span
                     className="block h-1.5 w-1.5 rounded-full"
@@ -126,46 +150,65 @@ function ModalContent({ project, onClose }: { project: Project; onClose: () => v
               ) : null}
             </div>
 
-            <p className="text-[1.0625rem] leading-relaxed opacity-90">{shortDescription}</p>
+            <p className="text-[1.0625rem] leading-relaxed opacity-90">
+              {shortDescription}
+            </p>
 
             {/* Sans adresse renseignée, on le dit — plutôt qu'un lien mort. */}
             {website ? (
-              <a
-                href={website}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group mt-auto inline-flex w-fit items-center gap-2.5 rounded-full px-6 py-3.5 text-[0.95rem] font-semibold transition-transform duration-200 hover:-translate-y-0.5 active:translate-y-0"
-                style={{
-                  backgroundColor: colors.ink,
-                  color: colors.surface,
-                  boxShadow: `0 10px 26px ${colors.primary}55`,
-                }}
-              >
-                {/* Un lien App Store ne « découvre » pas un projet, il le
-                    télécharge : le libellé doit annoncer ce qui va se passer. */}
-                {website.includes("apps.apple.com")
-                  ? "Télécharger sur l'App Store"
-                  : "Découvrir le projet"}
-                <svg
-                  viewBox="0 0 24 24"
-                  className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2.2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  aria-hidden="true"
+              <>
+                <a
+                  href={website}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group mt-auto inline-flex w-fit items-center gap-2.5 rounded-full px-6 py-3.5 text-[0.95rem] font-semibold transition-transform duration-200 hover:-translate-y-0.5 active:translate-y-0"
+                  style={{
+                    backgroundColor: colors.ink,
+                    color: colors.surface,
+                    boxShadow: `0 10px 26px ${colors.primary}55`,
+                  }}
                 >
-                  <path d="M14 4h6v6" />
-                  <path d="M20 4 10.5 13.5" />
-                  <path d="M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5" />
-                </svg>
-                <span className="sr-only">(nouvel onglet)</span>
-              </a>
+                  {/* Un lien App Store ne « découvre » pas un projet, il le
+                    télécharge : le libellé doit annoncer ce qui va se passer. */}
+                  {website.includes("apps.apple.com")
+                    ? "Télécharger sur l'App Store"
+                    : "Découvrir le projet"}
+                  <svg
+                    viewBox="0 0 24 24"
+                    className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2.2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path d="M14 4h6v6" />
+                    <path d="M20 4 10.5 13.5" />
+                    <path d="M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5" />
+                  </svg>
+                  <span className="sr-only">(nouvel onglet)</span>
+                </a>
+
+                {/* Dit à voix haute ce que seule l'icône suggérait : le visiteur
+                  sait qu'il pourra revenir. `aria-hidden` évite de le répéter
+                  aux lecteurs d'écran, qui l'entendent déjà dans le nom du
+                  lien. */}
+                <p
+                  aria-hidden="true"
+                  className="text-xs leading-snug opacity-55"
+                >
+                  S&apos;ouvre dans un nouvel onglet — le portfolio reste
+                  ouvert.
+                </p>
+              </>
             ) : (
               <p
                 className="mt-auto inline-flex w-fit items-center gap-2.5 rounded-full px-6 py-3.5 text-[0.95rem] font-semibold"
-                style={{ backgroundColor: `${colors.ink}12`, color: colors.ink }}
+                style={{
+                  backgroundColor: `${colors.ink}12`,
+                  color: colors.ink,
+                }}
               >
                 Bientôt en ligne
               </p>
