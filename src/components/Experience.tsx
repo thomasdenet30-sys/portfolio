@@ -58,6 +58,15 @@ export function Experience() {
    * rend la main au navigateur entre deux morceaux, au lieu de monopoliser le
    * fil principal pendant 150 ms d'affilée.
    */
+  /* Le code de la salle est telecharge des l'hydratation — un simple `import()`
+     ne declenche aucun rendu, seulement une requete reseau. Sans cela, le
+     visiteur qui clique tout de suite attendait le chunk *pendant* que les
+     vantaux tournaient. */
+  useEffect(() => {
+    void import("@/components/classroom/Classroom");
+    void import("@/components/project/ProjectModal");
+  }, []);
+
   useEffect(() => {
     let idle = 0;
     const schedule = () => {
@@ -90,14 +99,22 @@ export function Experience() {
     /* L'acoustique s'ouvre au rythme des vantaux : le murmure de l'amphi, jusque
        là étouffé par le chêne, se dégage pendant qu'ils tournent. */
     setRoomOpen(true);
-    setRoomBuilt(true);
+    /* En transition, pas en urgence : si la salle n'a pas encore ete construite
+       au moment du clic, React decoupe son rendu et rend la main entre deux
+       morceaux — les vantaux continuent de tourner sans a-coup. */
+    startTransition(() => setRoomBuilt(true));
     setPhase("passage");
   }, []);
 
   const select = useCallback((project: Project) => {
     playChime();
     setCardEverOpened(true);
-    setSelected(project);
+    /* En transition : React découpe le montage de la fiche — un SVG de
+       personnage complet, son grand visuel et ses logos — au lieu de bloquer
+       le fil. Cela coûte ~35 ms de latence perçue, sous le seuil des 100 ms
+       où un appui cesse de paraître instantané, et fait tomber le pire pic de
+       134 à 99 ms sur mobile bridé. */
+    startTransition(() => setSelected(project));
   }, []);
 
   const close = useCallback(() => setSelected(null), []);

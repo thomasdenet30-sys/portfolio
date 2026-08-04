@@ -1,8 +1,10 @@
 "use client";
 
 import { motion } from "motion/react";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
+import ReactDOM from "react-dom";
 import { projects } from "@/data/projects";
+import { asset } from "@/lib/site";
 import { easeOutExpo } from "@/lib/motion";
 import { buildSeating, buildTiers, DESK_WIDTH } from "@/lib/seating";
 import { usePortrait } from "@/hooks/useMediaQuery";
@@ -24,6 +26,18 @@ export function Classroom({ onSelect }: { onSelect: (project: Project) => void }
      rang sur un téléphone tenu droit, sans quoi les pupitres deviennent trop
      étroits pour que leur plaque reste lisible. */
   const layout = usePortrait() ? "portrait" : "landscape";
+  /* Les logos des fiches sont mis en cache des que la salle existe. Sans cela,
+     passer d'une fiche a l'autre attendait le reseau a chaque nouveau projet —
+     tres sensible sur une connexion lente. Le visiteur regarde encore la salle
+     a ce moment-la : le telechargement ne coute rien de visible. */
+  useEffect(() => {
+    for (const projet of projects) {
+      for (const fichier of [projet.logo.icon, projet.logo.wordmark]) {
+        if (fichier) ReactDOM.preload(asset(fichier), { as: "image" });
+      }
+    }
+  }, []);
+
   const seats = useMemo(() => buildSeating(projects.length, layout), [layout]);
   const tiers = useMemo(() => buildTiers(projects.length, layout), [layout]);
 

@@ -85,10 +85,17 @@ export function StudentCard({ project, seat, index, deskWidth, onSelect }: Stude
             <div className="relative w-full" style={{ aspectRatio: "200 / 176" }}>
               {/* Halo chaud : l'élève interpellé sort de la pénombre. */}
               <motion.div
-                className="pointer-events-none absolute left-1/2 top-[4%] h-[72%] w-[130%] -translate-x-1/2 rounded-full blur-2xl"
-                style={{ backgroundColor: project.colors.primary }}
+                /* Dégradé radial plutôt qu'un cercle plein flouté : le rendu
+                   est le même, mais animer l'opacité d'un `filter: blur` oblige
+                   le moteur à refloutter la couche à chaque frame. Le halo se
+                   rallume à chaque retour de focus — donc à chaque fermeture de
+                   fiche — et c'était le pic le plus cher de l'enchaînement. */
+                className="pointer-events-none absolute left-1/2 top-[2%] h-[76%] w-[140%] -translate-x-1/2"
+                style={{
+                  backgroundImage: `radial-gradient(closest-side, ${project.colors.primary} 0%, transparent 78%)`,
+                }}
                 initial={false}
-                animate={{ opacity: active ? 0.4 : 0 }}
+                animate={{ opacity: active ? 0.5 : 0 }}
                 transition={spring.snappy}
               />
 
