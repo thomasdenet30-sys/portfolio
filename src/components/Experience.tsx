@@ -11,6 +11,16 @@ import { SoundToggle } from "@/components/ui/SoundToggle";
 import { playChime, playCreak, playLatch, setRoomOpen } from "@/lib/audio";
 import type { Project } from "@/types/project";
 
+declare global {
+  interface Window {
+    /** Posé par le capteur inline du layout : un clic sur le seuil est arrivé
+        avant que l'application soit prête. */
+    __seuilClic?: number;
+    /** Débranche ce capteur : à partir d'ici, React gère les clics. */
+    __seuilStop?: () => void;
+  }
+}
+
 /* La salle et la fiche projet ne servent pas au premier écran : les charger
    au démarrage allongerait pour rien l'hydratation, donc le LCP de la porte.
    Elles sont donc découpées hors du bundle initial. */
@@ -118,6 +128,21 @@ export function Experience() {
   }, []);
 
   const close = useCallback(() => setSelected(null), []);
+
+  /* Rejoue le clic reçu avant l'hydratation.
+     Sur une connexion lente, la porte reste plusieurs secondes visible mais
+     inerte ; le visiteur clique, rien ne se passe, et il conclut que le site
+     est cassé. On honore donc son geste dès qu'on prend la main. */
+  useEffect(() => {
+    const frame = requestAnimationFrame(() => {
+      const enAttente = window.__seuilClic;
+      // React prend le relais : le capteur n'a plus lieu d'être.
+      window.__seuilStop?.();
+      window.__seuilClic = 0;
+      if (enAttente) enter();
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [enter]);
 
   /* Chien de garde.
      Franchir le seuil dépend de `onAnimationComplete`. Une machine à états ne

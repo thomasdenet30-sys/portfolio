@@ -184,6 +184,7 @@ export function Door({ open, onEnter, onPrefetch, onEntered }: DoorProps) {
         {/* Commande unique : c'est elle qui porte l'accessibilité. */}
         <motion.button
           type="button"
+          data-seuil
           className="absolute inset-x-[10%] bottom-[14%] top-[42%] cursor-pointer rounded-2xl"
           onPointerEnter={arm}
           onPointerLeave={() => setHovered(false)}
@@ -196,7 +197,7 @@ export function Door({ open, onEnter, onPrefetch, onEntered }: DoorProps) {
           transition={{ duration: 0.25 }}
         >
           <motion.span
-            className="absolute inset-x-0 bottom-0 block"
+            className="cta-seuil absolute inset-x-0 bottom-0 block"
             animate={{ y: hovered ? -6 : 0 }}
             transition={spring.snappy}
           >

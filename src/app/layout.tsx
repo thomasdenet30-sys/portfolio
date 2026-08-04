@@ -64,7 +64,28 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="fr" className={`${instrumentSerif.variable} antialiased`}>
-      <body>{children}</body>
+      <body>
+        {/* Capteur de clic precoce.
+            La porte est dessinee par le HTML et le CSS, donc visible bien avant
+            que le JavaScript arrive : sur une connexion lente, plusieurs
+            secondes. Tout clic pendant ce temps etait perdu sans trace — la
+            porte semblait simplement ne pas s'ouvrir. Ce script inline, execute
+            des l'analyse du document, note l'intention ; l'application la
+            rejoue des qu'elle prend la main. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              "(function(){try{window.__seuilClic=0;" +
+              "function h(e){var t=e.target;if(t&&t.closest&&t.closest('[data-seuil]')){" +
+              "window.__seuilClic=1;document.documentElement.setAttribute('data-seuil-attente','');}}" +
+              "document.addEventListener('click',h,{capture:true});" +
+              "window.__seuilStop=function(){document.removeEventListener('click',h,{capture:true});" +
+              "document.documentElement.removeAttribute('data-seuil-attente');};" +
+              "}catch(e){}})()",
+          }}
+        />
+        {children}
+      </body>
     </html>
   );
 }
